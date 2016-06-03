@@ -657,16 +657,8 @@ diff -Naur postgresql-9.2.3.orig/src/backend/postmaster/postmaster.c postgresql-
  #endif
  
  	/*
-@@ -1435,15 +1478,15 @@
- 		}
- 
- 		/*
--		 * Touch the socket and lock file every 58 minutes, to ensure that
-+		 * Touch Unix socket and lock files every 58 minutes, to ensure that
- 		 * they are not removed by overzealous /tmp-cleaning tasks.  We assume
- 		 * no one runs cleaners with cutoff times of less than an hour ...
+@@ -1570,8 +1613,8 @@
  		 */
- 		now = time(NULL);
  		if (now - last_touch_time >= 58 * SECS_PER_MINUTE)
  		{
 -			TouchSocketFile();
@@ -1180,6 +1172,7 @@ diff -Naur postgresql-9.2.3.orig/src/include/miscadmin.h postgresql-9.2.3/src/in
 +					 const char *socketDir);
 +extern void TouchSocketLockFiles(void);
  extern void AddToDataDirLockFile(int target_line, const char *str);
+ extern bool RecheckDataDirLockFile(void);
  extern void ValidatePgVersion(const char *path);
  extern void process_shared_preload_libraries(void);
 diff -Naur postgresql-9.2.3.orig/src/include/postmaster/postmaster.h postgresql-9.2.3/src/include/postmaster/postmaster.h
